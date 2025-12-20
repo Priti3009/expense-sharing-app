@@ -119,11 +119,11 @@ Minimize the number of settlement transactions while preserving net balances.
 - netBalance > 0 → user should receive money
 - netBalance < 0 → user needs to pay money
 
-3. Divide users into:
+2. Divide users into:
     - Creditors
     - Debtors
 
-4. Match debtors to creditors greedily:
+3. Match debtors to creditors greedily:
     -  Settle minimum possible amount
     -  Reduce both balances
     -  Continue until all balances become zero
