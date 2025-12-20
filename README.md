@@ -11,16 +11,18 @@ Design a backend system that supports:
 -	Simplifying balances
 
 ## Requirements
--	Users can create groups
--	Users can add expenses in a group
--	Supported split types:
-            o	Equal split
-            o	Exact amount split
-            o	Percentage split
--	Each user can view:
-            o	How much they owe
-            o	How much others owe them
--	Balances should be simplified
+
+- Users can create and manage groups
+- Users can add shared expenses within a group
+- The system supports the following split types:
+  - Equal split
+  - Exact amount split
+  - Percentage split
+- Each user can view:
+  - The total amount they owe
+  - The total amount owed to them
+- Balances should be automatically simplified to minimize the number of settlements
+
 
 ## Core Entities
 - User
@@ -37,19 +39,19 @@ Design a backend system that supports:
 ## Entity Design
 
 ### User
-- userId
-- name
-- email
+- userId : String
+- name : String
+- email : String
 
 ### Group
-- groupId
-- name
+- groupId : String
+- name : String
 - members : List<User>
 
 ### Expense
-- expenseId
-- description
-- totalAmount
+- expenseId : String
+- description : String 
+- totalAmount : Double
 - paidBy : User
 - splitType : SplitType
 - splits : List<Split>
@@ -57,6 +59,12 @@ Design a backend system that supports:
 ### Split
 - user : User
 - amount : Double
+
+### BalanceManager
+- balances : Map<User, Map<User, Double>>
+- addExpense(expense : Expense)
+- getBalances(user : User)
+- settle(from : User, to : User, amount : Double)
 
 
 ## Balance Tracking
@@ -79,13 +87,13 @@ This structure represents both payables and receivables clearly.
 
 ## Split Types
 
-1. Equal Split
+1. Equal Split - 
 Total amount is divided equally among all users.
 
-2. Exact Split
-Sum of all split amounts must equal total expense amount.
+2. Exact Split - 
+Sum of all split amounts must be equal to the total expense amount.
 
-3. Percentage Split
+3. Percentage Split - 
 Sum of all percentages must be 100.
 
 Each user’s share is calculated accordingly.
@@ -99,9 +107,10 @@ Each user’s share is calculated accordingly.
 
 ## Balance Simplification
 
-Objective - Minimize the number of settlement transactions while preserving net balances.
+### Objective 
+Minimize the number of settlement transactions while preserving net balances.
 
-Simplification Steps
+### Simplification Steps
 
 1. Compute net balance for each user:
    
